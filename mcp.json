@@ -1,0 +1,29 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/mcp.json",
+  "name": "doti-mcp",
+  "version": "1.2.0",
+  "description": "Universal Sovereign Web3 Identity (.i) across Arbitrum One, OP Mainnet, Ethereum, and Robinhood Chain with Chainlink CCIP",
+  "author": "Doti Protocol",
+  "homepage": "https://doti.my",
+  "mcpServers": {
+    "doti": {
+      "type": "http",
+      "url": "https://doti.my/api/ai/mcp",
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  },
+  "supportedChains": [
+    { "chainId": 42161, "name": "Arbitrum One", "role": "Authority" },
+    { "chainId": 10, "name": "OP Mainnet", "role": "Satellite" },
+    { "chainId": 1, "name": "Ethereum Mainnet", "role": "Satellite" },
+    { "chainId": 4663, "name": "Robinhood Chain", "role": "Satellite" }
+  ],
+  "capabilities": {
+    "tools": 19,
+    "resources": 4,
+    "crossChainProtocol": "Chainlink CCIP v1.5",
+    "permanentIdentity": true
+  }
+}

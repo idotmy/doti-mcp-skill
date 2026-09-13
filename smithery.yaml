@@ -1,0 +1,17 @@
+# Smithery Configuration for Doti Protocol MCP Server
+# Registry: https://smithery.ai
+name: doti-mcp
+title: Doti Protocol (.i) MCP Server
+description: Sovereign Web3 Identity, Multi-Chain Domain Resolution, and Profile Management across Arbitrum One, OP Mainnet, Ethereum Mainnet, and Robinhood Chain with Chainlink CCIP.
+version: 1.0.0
+homepage: https://doti.my
+
+startCommand:
+  type: http
+  url: "https://doti.my/api/ai/mcp"
+
+configSchema:
+  endpoint:
+    type: string
+    description: "Doti Protocol MCP Endpoint URL"
+    default: "https://doti.my/api/ai/mcp"
