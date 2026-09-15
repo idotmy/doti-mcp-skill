@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.idotmy/doti-mcp",
+  "title": "Doti Protocol (.i) MCP Server",
+  "description": "Sovereign .i Web3 identity and multi-chain domain tools across four EVM networks.",
+  "websiteUrl": "https://doti.my",
+  "repository": {
+    "url": "https://github.com/idotmy/doti-mcp-skill",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://doti.my/api/ai/mcp"
+    }
+  ]
+}
