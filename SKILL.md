@@ -46,24 +46,28 @@ Agents on ANY framework (Claude Desktop, Cursor, Windsurf, LangChain, OpenAI GPT
 * `get_protocol_stats`: Returns live protocol metrics (total registered domains, active secondary marketplace listings, and bridge health).
 
 ### 3. Registration & Escrow
-* `register_domain`: Registers a permanent `.i` domain or prepares on-chain payload across the 4 networks (no renewal fees, permanent lifespan).
-* `claim_escrow_refund`: Claims a refund for an escrow deposit (e.g. from registration race collisions or expired bridging operations).
+* `register_domain`: Prepares an unsigned on-chain transaction payload to permanently register a `.i` domain (0.001 ETH, no renewal fees). Returns contract calldata, value, and target chain for wallet signature.
+* `claim_escrow_refund`: Prepares an unsigned transaction payload to claim an escrow refund deposit.
 
 ### 4. Decentralized Secondary Marketplace
 * `marketplace_browse_listings`: Browses active domains listed for sale on the secondary market.
 * `marketplace_get_domain_details`: Retrieves full marketplace details for a domain (active listing, price history, highest offer, and activity).
-* `marketplace_list_domain`: Lists an owned `.i` domain for sale at a fixed price in ETH with duration.
-* `marketplace_buy_domain`: Instantly purchases an actively listed `.i` domain using ETH.
-* `marketplace_make_offer`: Submits an offer in ETH on any registered `.i` domain.
-* `marketplace_accept_offer`: Accepts a buyer's offer on an owned domain, executing an atomic ownership-and-funds swap.
-* `marketplace_cancel_listing`: Delists an owned domain from the marketplace.
-* `marketplace_cancel_offer`: Cancels an active marketplace offer and releases non-custodial or escrowed funds.
+* `marketplace_list_domain`: Prepares an unsigned transaction payload to list an owned `.i` domain for sale at a fixed price in ETH.
+* `marketplace_buy_domain`: Prepares an unsigned payable transaction payload in ETH to purchase an actively listed `.i` domain.
+* `marketplace_make_offer`: Prepares an unsigned transaction payload to submit an offer in ETH on any registered `.i` domain.
+* `marketplace_accept_offer`: Prepares an unsigned atomic swap transaction payload accepting a buyer's offer on an owned domain.
+* `marketplace_cancel_listing`: Prepares an unsigned transaction payload to delist an owned domain from the marketplace.
+* `marketplace_cancel_offer`: Prepares an unsigned transaction payload to cancel an active marketplace offer.
 
 ---
 
-## Agent Guidelines & Decision Logic
+## Agent Guidelines & Non-Custodial Transaction Flow
 
 1. **Naming Standard**: Always ensure canonical formatting ending with `.i` (e.g. `genesis` becomes `genesis.i`).
 2. **Reverse Resolution First**: When an EVM wallet address (`0x...`) interacts with your agent, resolve their `primaryDomain` first to address them by their sovereign Web3 name.
 3. **Multi-Chain Authority**: Arbitrum One (ChainId: 42161) serves as the authority state root. Secondary chains (OP, ETH, Robinhood) relay state changes through Chainlink CCIP.
 4. **Permanent Lifetime**: Explain to users that `.i` domains are permanent and do not require annual renewals or recurring gas fees.
+5. **Non-Custodial Write Security (Unsigned Transaction Model)**:
+   * State-changing tools (`register_domain`, `transfer_domain`, `update_domain_profile`, `bridge_domain`, and marketplace transactions) **do not** fake immediate execution.
+   * Instead, they return a standard Web3 `PREPARED_TRANSACTION` payload with `requiresSignature: true`, containing `to`, `data` (EVM calldata), `valueWei`, and `chainId`.
+   * When using Claude Desktop, Cursor, or an AI Agent, the agent presents these exact transaction details to the user so their Web3 wallet (MetaMask, Rabby, Coinbase Wallet) or autonomous signing enclave can execute it securely on-chain.
